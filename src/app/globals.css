@@ -82,17 +82,13 @@ But If you want to add your own default base styles for specific HTML elements, 
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-white-lilac: #faf4fc;
-  }
-}
-
 /* 
----break---
+---break--- light mode
 */
 
 :root {
+  --color-trae-test: #faf4fc;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -128,7 +124,7 @@ But If you want to add your own default base styles for specific HTML elements, 
 }
 
 /* 
----break---
+---break--- dark mode
 */
 
 .dark {
