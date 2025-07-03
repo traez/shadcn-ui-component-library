@@ -70,7 +70,7 @@ const SolarLanding = () => {
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
             Get a free evaluation for your property and discover how much you
             can save with solar energy. Our pre-approved specialists will assess
-            your property's solar potential.
+            your property&apos;s solar potential.
           </p>
           <Button
             size="lg"

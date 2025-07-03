@@ -1,6 +1,6 @@
-# Beginners Google Gemini Ai Course
+# Shadcn UI Component Library SandBox
 
-AI Integration Sandbox App using Google Gemini.
+React UI component libraries sandbox App.
 
 ## Table of contents
 
@@ -20,14 +20,19 @@ AI Integration Sandbox App using Google Gemini.
 
 ### The Challenge/User Stories
 
-This hobby app was built to explore and demonstrate the capabilities of Google Gemini's AI in a real-world context. The goal was to integrate Gemini for multiple core features: generating rich, context-aware text responses; enabling interactive chat sessions with an LLM; and visualizing token usage in real time. The app is structured to simulate a basic AI assistant workflow, showing how LLMs can be embedded into web apps for content generation, conversation, and cost-awareness via token tracking.  
+**Damilare Femi Akinlaja**: "When working on large projects, where you collaborate with many other engineers, a well componentized architecture makes it so that you don’t redo what already exists.
 
-As a user, I want to:  
+Problem caused from redoing stuff is regression errors, and inconsistency in app behavior:
 
-- Chat with a Gemini-powered assistant in a fluid, session-based way.
-- Generate text content on demand from prompts I provide.
-- See how many tokens each interaction uses, so I can better understand and manage usage costs.
-This app serves both as a playground for testing Gemini and a template for building more advanced AI-driven tools.
+For example, there is a modal component that has been maintained over time to be perfect fit for the project’s scenarios.
+
+Then someone else create their own version in their own small feature… there will be chances of design inconsistency, behavior differences, and it could confuse other developers when maintaining the code base.
+
+Imperative development is nice, but some architecture makes it maintainable and testable.
+
+Tailwind only solve for design, but not all of it, and it doesn’t solve for scoped logic.
+
+Frontend architectures like component driven design were not born out of someone’s fantasy, they solve problems that you would never know existed until you encounter them and it’s too late"
 
 ### Screenshot
 
@@ -35,8 +40,8 @@ This app serves both as a playground for testing Gemini and a template for build
 
 ### Links
 
-- Solution URL: [https://github.com/traez/beginners-google-gemini-ai-course](https://github.com/traez/beginners-google-gemini-ai-course)
-- Live Site URL: [https://beginners-google-gemini-ai-course.vercel.app/](https://beginners-google-gemini-ai-course.vercel.app/)
+- Solution URL: [https://github.com/traez/shadcn-ui-component-library](https://github.com/traez/shadcn-ui-component-library)
+- Live Site URL: [https://shadcn-ui-component-library.vercel.app/](https://shadcn-ui-component-library.vercel.app/)
 
 ## My process
 
@@ -52,86 +57,71 @@ This app serves both as a playground for testing Gemini and a template for build
 - Nodejs
 - Tailwind CSS
 - nextjs-toploader
-- zustand  
-- @google/genai  
-- dotenv  
-- drizzle-orm  
-- postgres  
-- react-markdown  
-- uuid  
+- ShadCN  
+- @radix-ui  
+- class-variance-authority  
+- clsx  
+- lucide-react  
+- nextjs-toploader  
+- tailwind-merge    
 
 ### What I learned
 
-**1 API Key Security Best Practices**  
-**Never expose API keys in frontend code**, even with environment variable prefixes like `VITE_` or `NEXT_PUBLIC_`. These variables get bundled into your frontend build and are visible in browser DevTools.
+**1 Main Reasons for Using CSS Component Libraries**   
 
-**✅ Secure Approach:**
+**A Accessibility**: Built-in ARIA attributes and keyboard navigation support  
+**B Consistency**: Ensures uniform design across the application  
+**C Speed**: Reduces development time with pre-built components  
+**D Responsive Design**: Components automatically adapt to different screen sizes  
+**E Cross-Browser Compatibility**: Works seamlessly across various browsers       
 
-- Route all API requests through your backend server (e.g., `/api/generate-content`)
-- Store API keys as server-side environment variables
-- Frontend never directly accesses or sends the API key
+**2 Shadcn/ui Current State & Considerations**  
+Shadcn/ui, built on top of Radix, faces potential risks due to Radix's declining maintenance—currently maintained by just one part-time developer, with unresolved bugs and limited support from its parent company, which reportedly wants to discontinue it. Despite Shadcn's popularity, it's built on an unstable foundation. Some developers are advocating for a shift toward more stable alternatives like Ariakit or Base UI, which are actively maintained and well-funded. Without a stronger foundation, Shadcn's long-term viability remains uncertain. However, we continue using it as it's currently in a class of its own.
 
+**Important**: Shadcn is not used everywhere in this project. Tailwind CSS is still extensively used, with Shadcn components imported only as needed. This approach helps maintain familiarity with the library while keeping the codebase more maintainable and consistent.
 
-**❌ Insecure Approach:**
+**3 Understanding Transitive Dependencies**  
+**What Are Transitive Dependencies?**
+- Dependencies that your direct dependencies (listed in `package.json`) rely on
+- Installed automatically by npm/yarn/pnpm but not explicitly listed in your `package.json`
+- Form a dependency tree (viewable with `npm ls`, `yarn list`, or `pnpm list --depth 2`) 
 
+**4 VS Code File Path Tips**  
+In VS Code, you can quickly generate file paths as comments using the built-in "Copy Path" feature:
+1. Right-click the file in the Explorer sidebar
+2. Select "Copy Path" or "Copy Relative Path"
+3. Paste it as a comment in your file  
 ```javascript
-// DON'T DO THIS - Exposes key in frontend bundle
-const apiKey = process.env.VITE_GEMINI_API_KEY
+// src/components/Navbar.tsx
 ```
 
-**✅ Secure Implementation:**
+**5 State Management Strategy. When to Use Cookies vs. Zustand:**  
+**Use cookies** for small, persistent values that need to be shared between server and client (auth tokens, user preferences, "remember me" toggles)
+**Use Zustand** (or similar) for fast-changing, in-memory app state that doesn't need to persist across page reloads or be accessed server-side 
 
-```javascript
-// Frontend makes request to your API endpoint
-const response = await fetch('/api/generate-content', {
-  method: 'POST',
-  body: JSON.stringify({ prompt: userInput })
-})
+**6 Understanding the `asChild`Property**  
+The `asChild` prop is a common pattern in component libraries (like Radix UI) that allows a component to pass all its props down to its child element instead of rendering its own DOM element.
 
-// Backend handles the actual API call with secure key
-```   
-
-**2 Tailwind Responsive Image Pattern**  
-For responsive images with fixed aspect ratios, use this Tailwind pattern:
+**Example:**
 
 ```javascriptreact
-<div className="relative w-full max-w-[370px] aspect-[740/987] mt-4">
-  <Image
-    src="/gemini.jpg"
-    alt="gemini"
-    fill
-    sizes="(min-width: 360px) 100vw"
-    className="object-contain rounded-lg"
-  />
-</div>
+<SidebarMenuButton asChild>
+  <Link href="/dashboard">
+    <Home />
+    <span>Dashboard</span>
+  </Link>
+</SidebarMenuButton>
+```
+**Renders as:**
+
+```html
+<a href="/dashboard" class="sidebar-menu-button"> <!-- Notice it's now an <a> tag -->
+  <svg>...</svg> <!-- Home icon -->
+  <span>Dashboard</span>
+</a>
 ```
 
-**Key Components:**
-
-- `relative` - Required for `fill` positioning
-- `aspect-[width/height]` - Maintains consistent aspect ratio
-- `fill` - Makes image fill the container
-- `sizes` - Optimizes image loading for different screen sizes
-- `object-contain` - Prevents image distortion   
-
-**3 Essential Resources**  
-### Pricing & Documentation
-
-- [Vertex AI Pricing](https://cloud.google.com/vertex-ai/generative-ai/pricing) - Cost calculator for AI models
-- [Gemini 2.0 Flash Documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-0-flash#2.0-flash)
-- [Content Generation API](https://ai.google.dev/api/generate-content) - General FAQ
-
-### Google Cloud Console
-
-- [API Credentials](https://console.cloud.google.com/apis/credentials) - Manage API keys
-- [Project Dashboard](https://console.cloud.google.com/home/dashboard) - Project overview
-
-### Official Tutorials (Current as of June 2025)
-
-- [Gemini API Libraries](https://ai.google.dev/gemini-api/docs/libraries) - SDK options
-- [Quickstart Guide](https://ai.google.dev/gemini-api/docs/quickstart) - Getting started
-- [Migration Guide](https://ai.google.dev/gemini-api/docs/migrate) - Upgrade to Google Gen AI SDK
-- [Text Generation](https://ai.google.dev/gemini-api/docs/text-generation) - Implementation guide  
+The button properties are passed down to the `<Link>` component rather than creating a separate button wrapper.   
 
 ### Continued development
 
